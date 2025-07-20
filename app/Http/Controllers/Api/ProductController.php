@@ -24,7 +24,7 @@ class ProductController extends Controller
         $page_limit = $request->input('page_limit') ?? 1;
         $sortField = $request->input('sort') ?? 'created_at';
 
-        $sortDirection = Str::of($sortField)->startsWith('desc') 
+        $sortDirection = Str::of($sortField)->startsWith('-') 
             ? 'desc' 
             : 'asc';
 
