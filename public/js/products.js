@@ -57,6 +57,7 @@ function loadTable(products){
             <td>${product.currency}${product.price}</td>
             <td>${product.entry_date}</td>
             <td>${product.expiration_date}</td>
+            <td><img src="${product.photo_product}" alt="Imagen del producto" class="w-16 h-16 object-cover rounded"/></td>
             <td>
                 <div class="flex items-center justify-center space-x-2">
                     <button onclick="openModalEditProduct(${product.id})" class="px-3 py-1 rounded bg-green-200 text-gray-700 hover:bg-gray-300 transition">
@@ -192,6 +193,9 @@ function sortTable(field){
 }
 
 function openModalCreateProduct(){
+
+    cleanErrors();
+
     isModalEdit = false;
     document.getElementById('modalTitle').textContent = 'Crear Producto';
     document.getElementById('saveProductBtn').textContent = 'Guardar';
@@ -209,10 +213,12 @@ function openModalCreateProduct(){
 
 async function openModalEditProduct(idProduct){
 
+    cleanErrors();
     isModalEdit = true;
     productEditId = idProduct;
     document.getElementById('modalTitle').textContent = 'Actualizar Producto';
     document.getElementById('saveProductBtn').textContent = 'Actualizar';
+    document.getElementById('saveProductForm').reset();
 
     const response = await fetch(`/api/v1/products/${idProduct}`, {
         method: 'GET',
@@ -226,7 +232,7 @@ async function openModalEditProduct(idProduct){
     const product = await response.json();
 
     if( product.code === 200 ){
-        console.log(product.data);
+        
         document.getElementById('code_product').value = product.data.code_product;
         document.getElementById('name_product').value = product.data.name_product;
         document.getElementById('quantity').value = product.data.quantity;
@@ -239,8 +245,16 @@ async function openModalEditProduct(idProduct){
         const preview = document.getElementById('productImagePreview');
 
         if (preview) {
-            preview.src = product.data.photo_product;
+
+            if( product.data.photo_product === null || product.data.photo_product === '' ){
+                preview.src = '/images/default.png';
+            }else{
+                preview.src = product.data.photo_product;
+            }
+
+
             preview.classList.remove('hidden');
+
         }
 
     }
@@ -249,6 +263,7 @@ async function openModalEditProduct(idProduct){
 }
 
 function closeModal(){
+    document.getElementById('saveProductForm').reset();
     document.getElementById('productModal').classList.add('hidden');
 }
 
@@ -283,7 +298,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async (e) 
 
     try{
 
-        const response = await fetch(`/api/v1/products/`+productToDelete, {
+        const dataResponse = await fetch(`/api/v1/products/`+productToDelete, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -291,6 +306,8 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async (e) 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         })
+
+        const response = await dataResponse.json();
 
         if( response.code !== 200 ) throw new Error('Error al eliminar el producto');
 
@@ -302,7 +319,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', async (e) 
             closeModalDelete();
             currentPage = 1;
             getProducts(currentPage);
-        }, 1000);
+        }, 500);
 
     }catch (err) {
 
@@ -340,8 +357,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             const expirationDate = document.getElementById('expiration_date').value;
             const photoProduct = document.getElementById('photo_product').files[0];
 
-            const imageBase64 = await toBase64(photoProduct);
-            const cleanBase64 = imageBase64.split(',')[1];
+            let cleanBase64 = '';
+
+            if( photoProduct ){
+                const imageBase64 = await toBase64(photoProduct);
+                cleanBase64 = imageBase64.split(',')[1];
+            }
     
                 
             const response = await fetch('/api/v1/products', {
@@ -397,9 +418,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const entryDate = document.getElementById('entry_date').value;
             const expirationDate = document.getElementById('expiration_date').value;
             const photoProduct = document.getElementById('photo_product').files[0];
-            console.log(photoProduct);
-            // const imageBase64 = await toBase64(photoProduct);
-            // const cleanBase64 = imageBase64.split(',')[1];
+            
+            let cleanBase64 = '';
+
+            if( photoProduct ){
+                const imageBase64 = await toBase64(photoProduct);
+                cleanBase64 = imageBase64.split(',')[1];
+            }
     
                 
             const response = await fetch('/api/v1/products/'+productEditId, {
@@ -417,7 +442,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     currency: currency,
                     entry_date: entryDate,
                     expiration_date: expirationDate,
-                    photo_product: ''
+                    photo_product: cleanBase64
                 })
             });
 

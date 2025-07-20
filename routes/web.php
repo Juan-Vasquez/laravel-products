@@ -12,4 +12,14 @@ Route::group(['middleware' => 'auth'], function(){
 
 
     Route::get('products', [ProductController::class, 'index']);
+
+    Route::group(['prefix' => 'api/v1'], function(){
+    
+        Route::post('/getProducts', [ProductController::class, 'getProducts'])->name('products.index');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        
+    });
 });

@@ -66,7 +66,7 @@
             <div>
                 <label for="photo_product" class="block text-sm font-medium text-gray-700">Subir una imagen</label>
                 <div class="mt-1">
-                    <input id="photo_product" type="file" name="photo_product" required autocomplete="photo_product" autofocus class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <input id="photo_product" type="file" name="photo_product" autocomplete="photo_product" autofocus class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <p id="error-photo_product" class="text-red-500 text-sm mt-1"></p>
                 </div>
             </div>
@@ -74,13 +74,12 @@
             <div>
                 <div class="mt-1">
                     <img id="productImagePreview" class="w-32 h-auto mb-3 hidden" alt="Vista previa" \>
-                    {{-- <img id="productImagePreview" class="w-32 h-auto mb-3" alt="Vista previa" \> --}}
                 </div>
             </div>
 
             <div>
                 <button id="saveProductBtn" type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
-                <button onclick="closeModal()" type="submit" class="w-full flex justify-center py-2 my-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cancelar</button>
+                <button type="button" onclick="closeModal()" class="w-full flex justify-center py-2 my-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cancelar</button>
             </div>
 
         </form>
@@ -94,8 +93,8 @@
             <div id="deleteStatus" class="text-center text-sm text-gray-600 mb-3 hidden"></div>
 
             <div class="flex justify-end space-x-2">
-                <button type="button" onclick="closeModalDelete()" class="px-4 py-2 bg-gray-300 rounded">Cancelar</button>
-                <button id="confirmDeleteBtn" type="button" class="px-4 py-8 bg-red-600 text-white rounded">
+                <button type="button" onclick="closeModalDelete()" class="w-full flex justify-center py-2 my-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Cancelar</button>
+                <button id="confirmDeleteBtn" type="button" class="w-full flex justify-center py-2 my-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-200 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span id="deleteBtnText">Eliminar</span>
                     <span id="deleteSpinner" class="hidden animate-spin ml-2 border-2 border-t-transparent border-white rounded-full w-4 h-4"></span>
                 </button>

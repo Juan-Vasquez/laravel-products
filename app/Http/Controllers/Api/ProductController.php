@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Traits\formmaterBase64Trait;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    use formmaterBase64Trait;
 
     public function index()
     {
@@ -48,6 +51,7 @@ class ProductController extends Controller
                 'price' => $product->price,
                 'entry_date' => Carbon::parse($product->entry_date)->format('d-m-Y'),
                 'expiration_date' => Carbon::parse($product->expiration_date)->format('d-m-Y'),
+                'photo_product' => empty($product->photo_product) ? '/images/default.png' : $product->photo_product,
             ];
         });
 
@@ -58,36 +62,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
 
-        $request->validate();
-
-        $base64 = $request->photo_product;
-        $binaryData = base64_decode( $base64 );
-
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_buffer($finfo, $binaryData);
-
-        $extensions = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/gif' => 'gif'
-        ];
-
-        if ( !isset($extensions[$mimeType]) ) {
-            return response()->json(['error' => 'Tipo de imagen no soportado'], 415);
-        }
-
-        $filename= time() . '.' . $extensions[$mimeType];
-        $extension = $extensions[$mimeType];
-        $image = base64_encode($base64);
-        $image = base64_decode($image);
-        $path = 'products/' . $filename;
-        Storage::put($path, $image);
-
-        // Paso 7: Obtener la URL pública (si usas storage:link)
-        $url = Storage::url('products/' . $filename);
-
-        // $dateExpiration = Carbon::createFromFormat('d/m/Y', $request->expiration_date)->format('Y-m-d');
-        // $entryDate = Carbon::createFromFormat('d/m/Y', $request->entry_date)->format('Y-m-d H:i:s');
+        $urlImage = $this->pushBase64Image($request->photo_product);
 
         $dateExpiration = Carbon::parse($request->expiration_date);
         $entryDate = Carbon::parse($request->entry_date);
@@ -102,7 +77,7 @@ class ProductController extends Controller
             'code_product' => $request->code_product,
             'name_product' => $request->name_product,
             'quantity' => $request->quantity,
-            'photo_product' => $url,
+            'photo_product' => $urlImage,
             'price' => $request->price,
             'currency' => $request->currency,
             'entry_date' => $entryDate->toDateString(),
@@ -130,37 +105,12 @@ class ProductController extends Controller
         return response()->json(['code' => 200, 'message' => 'Producto encontrado', 'data' => $product], 200);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        // $request->validate();
 
         if( !empty($request->photo_product) ){
         
-            $base64 = $request->photo_product;
-            $binaryData = base64_decode( $base64 );
-    
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_buffer($finfo, $binaryData);
-    
-            $extensions = [
-                'image/jpeg' => 'jpg',
-                'image/png' => 'png',
-                'image/gif' => 'gif'
-            ];
-    
-            if ( !isset($extensions[$mimeType]) ) {
-                return response()->json(['error' => 'Tipo de imagen no soportado'], 415);
-            }
-    
-            $filename= time() . '.' . $extensions[$mimeType];
-            $extension = $extensions[$mimeType];
-            $image = base64_encode($base64);
-            $image = base64_decode($image);
-            $path = 'products/' . $filename;
-            Storage::put($path, $image);
-    
-            // Paso 7: Obtener la URL pública (si usas storage:link)
-            $url = Storage::url('products/' . $filename);
+            $urlImage = $this->pushBase64Image($request->photo_product);
 
         }
 
@@ -177,7 +127,7 @@ class ProductController extends Controller
             'code_product' => $request->code_product,
             'name_product' => $request->name_product,
             'quantity' => $request->quantity,
-            'photo_product' => $url ?? $product->photo_product,
+            'photo_product' => $urlImage ?? $product->photo_product,
             'price' => $request->price,
             'currency' => $request->currency,
             'entry_date' => $entryDate,
@@ -190,7 +140,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        Storage::disk('public')->delete('products/' . $product->photo_product);
+
         $product->delete();
+
         return response()->json(['code' => 200, 'message' => 'Producto eliminado', 'data' => $product], 200);
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code_product')->unique();
             $table->string('name_product');
             $table->integer('quantity');
-            $table->string('photo_product');
+            $table->string('photo_product')->nullable();
             $table->float('price');
             $table->string('currency');
             $table->date('entry_date');
