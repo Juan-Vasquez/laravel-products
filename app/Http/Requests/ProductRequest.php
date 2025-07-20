@@ -25,7 +25,7 @@ class ProductRequest extends FormRequest
             'code_product' => 'required|unique:products|min:3|max:10',
             'name_product' => 'required|min:3|max:100',
             'quantity' => 'required|integer|min:1|max:100',
-            'photo_product' => 'required|mimes:jpeg,png,jpg,gif',
+            'photo_product' => 'required',
             'price' => 'required|min:0.01|max:10000',
             'currency' => 'required',
             'entry_date' => 'required|date',

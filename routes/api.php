@@ -11,5 +11,5 @@ Route::get('/user', function (Request $request) {
 Route::post('/getProducts', [ProductController::class, 'getProducts'])->name('products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
