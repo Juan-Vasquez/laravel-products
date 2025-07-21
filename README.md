@@ -1,61 +1,47 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Products
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este es un proyecto de Laravel que permite crear y gestionar productos en una aplicación web, utilizando el framework Laravel manipulando el DOM con Javascript a través de AJAX.
 
-## About Laravel
+Para el Backend se utiliza el framework Laravel y para el Frontend se utiliza blade mostrando la informacion con Javascript y para estilos por el tiempo se ha utilizado tailwindcss cdn, como base de datos se utiliza MySQL y para el almacenamiento de archivos se utiliza el driver Local.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Asegurarse de tener instalado en su máquina:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-## Learning Laravel
+Dependera si se encuentra en Windows o Linux en el caso de Windows, debera configurar wsl para utilizar la virtualización de Docker.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instalación y configuración
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clonar el repositorio en su máquina local.
+```bash
+git clone https://github.com/Juan-Vasquez/laravel-products.git
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Entrar en el directorio del proyecto, puede realizarlo desde el editor de texto o bien utilizando la terminal, para poder copear archivo .env.example a .env
 
-## Laravel Sponsors
+3. Levantar los contenedores con Docker compose, ubicarse dentro del proyecto y ejecutar la siguiente orden.
+```bash
+docker compose up -d
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Conectarse al contenedor de la aplicacion para correr algunos comandos como las migraciones, seeder, la llave key y storage link, el seeder es mas para poder crear un usuario por defecto que para este ejemplo se utilizo correo test@example.com y contraseña 12345678, sientase libres de modificarlo si asi lo prefieren. 
 
-### Premium Partners
+```bash
+docker exec -it laravel-products-app php artisan key:generate
+docker exec -it laravel-products-app php artisan migrate
+docker exec -it laravel-products-app php artisan db:seed
+docker exec -it laravel-products-app php artisan storage:link
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. Configurar un host personalizado, ya que en nginx se ha configurado el host laravel-products.test si no prefiere utilizar el nombre de dominio de su preferencia, puede modificarlo en el archivo nginx.conf.
 
-## Contributing
+7. Abrir el navegador y acceder a la url http://laravel-products.test
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Documentación
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- [Laravel](https://laravel.com/docs)
+- [Docker](https://docs.docker.com/)
+- 
