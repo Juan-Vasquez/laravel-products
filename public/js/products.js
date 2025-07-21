@@ -32,7 +32,7 @@ async function getProducts(page) {
 
     if( response.data.length === 0 ) {
 
-        tPagination.innerHTML = `<p>No hay productos</p>`;
+        tPagination.innerHTML = `<p class="py-8 text-center text-gray-700 text-sm">No hay productos disponibles.</p>`;
         return;
 
     }

@@ -4,7 +4,7 @@
 
 <div class="h-screen px-4 sm:px-6 lg:px-8 min-h-full overflow-x-auto w-full bg-cover">
 
-    <div class="w-full text-center">
+    <div class="w-full py-8 text-center">
         <h1>Productos</h1>
     </div>
     <div class="px-4 py-2 mt-4">
